@@ -223,7 +223,7 @@
                           md:col-span-1
                           lg:col-span-1
                         "
-                        v-for="(criteria, idx) in criterion"
+                        v-for="(criteria, idx) in groupCriterion"
                         :key="idx"
                       >
                         <div class="flex">
@@ -240,7 +240,61 @@
                                 border-gray-dark
                                 rounded
                               "
-                              v-model="event.criterion"
+                              v-model="event.groupCriterion"
+                              :value="criteria"
+                            />
+                          </div>
+                          <div class="ml-3 text-sm">
+                            <label
+                              :for="criteria.criteriaField"
+                              class="font-medium text-black"
+                              >{{ criteria.criteriaField }}</label
+                            >
+                            <p class="text-gray-dark">
+                              {{ criteria._id }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="col-span-6">
+                  <fieldset>
+                    <legend class="sr-only">Assign Criterion/Rubric</legend>
+                    <div
+                      class="text-base text-sm font-medium text-black"
+                      aria-hidden="true"
+                    >
+                      Assign Criterion/Rubric
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+                      <div
+                        class="
+                          mt-4
+                          space-y-4
+                          col-span-2
+                          md:col-span-1
+                          lg:col-span-1
+                        "
+                        v-for="(criteria, idx) in individualCriterion"
+                        :key="idx"
+                      >
+                        <div class="flex">
+                          <div class="flex items-center h-5">
+                            <input
+                              :id="criteria._id"
+                              :name="criteria.criteriaField"
+                              type="checkbox"
+                              class="
+                                focus:ring-primary
+                                h-4
+                                w-4
+                                text-primary
+                                border-gray-dark
+                                rounded
+                              "
+                              v-model="event.individualCriterion"
                               :value="criteria"
                             />
                           </div>
@@ -323,10 +377,22 @@ export default {
     const examiners = await $axios.$get(`api/user/getExaminers`);
 
     const criterion = await $axios.$get(`api/criteria/show`);
+    const groupCriterion = await $axios.$get(
+      `api/criteria/showByCategory?category=group`
+    );
 
-    console.log(event);
+    const individualCriterion = await $axios.$get(
+      `api/criteria/showByCategory?category=individual`
+    );
 
-    return { event, slug, examiners, criterion };
+    return {
+      event,
+      slug,
+      examiners,
+      criterion,
+      groupCriterion,
+      individualCriterion,
+    };
   },
 
   methods: {
@@ -339,7 +405,8 @@ export default {
           eventDate: this.event.eventDate,
           active: this.event.active,
           examiners: this.event.examiners,
-          criterion: this.event.criterion,
+          groupCriterion: this.event.groupCriterion,
+          individualCriterion: this.event.individualCriterion,
         })
         .then((result) => {
           this.$nuxt.$loading.finish();
@@ -356,7 +423,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      this.$router.push("/event");
+      this.$router.push("/admin/events");
     },
   },
 };

@@ -22,6 +22,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/services/plugins/vuelidate',
     '~/services/plugins/font_awesome',
     '~/services/plugins/lodash',
     {src: '~/services/plugins/v-calendar.js', ssr: false}
@@ -51,7 +52,12 @@ export default {
     localStorage: false,
     strategies: {
       local:{
-        // cookie: false,
+        cookie: {
+          name: 'XSRF-TOKEN',
+          options: {
+            secure: true
+          }
+        },
 
         token: {
           // prefix: '_token.',

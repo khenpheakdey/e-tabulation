@@ -215,7 +215,7 @@
                         class="text-base text-sm font-medium text-black"
                         aria-hidden="true"
                       >
-                        Assign Criterion
+                        Assign Criterion For Group Assessment
                       </div>
                       <div
                         class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
@@ -228,7 +228,7 @@
                             md:col-span-1
                             lg:col-span-1
                           "
-                          v-for="(criteria, idx) in criterion"
+                          v-for="(criteria, idx) in groupCriterion"
                           :key="idx"
                         >
                           <div class="flex">
@@ -245,7 +245,7 @@
                                   border-gray-dark
                                   rounded
                                 "
-                                v-model="event.criterion"
+                                v-model="event.groupCriterion"
                                 :value="criteria"
                               />
                             </div>
@@ -261,8 +261,8 @@
                             </div>
                           </div>
                         </div>
-                        <div
-                          v-for="(addCriteria, idx) in addCriterion"
+                        <!-- <div
+                          v-for="(addCriteria, idx) in addGroupCriterion"
                           :key="idx"
                           class="col-span-3 mt-4"
                         >
@@ -279,16 +279,16 @@
                             <button
                               type="button"
                               class="text-red-600"
-                              @click="removeCriteriaField(idx)"
+                              @click="removeGroupField(idx)"
                             >
                               Remove
                             </button>
                           </div>
                           <CriteriaForm class="mt-4" />
-                        </div>
+                        </div> -->
                       </div>
                     </fieldset>
-                    <div class="mt-6">
+                    <!-- <div class="mt-6">
                       <button
                         type="button"
                         class="
@@ -309,14 +309,124 @@
                           focus:ring-offset-2
                           focus:ring-primary
                         "
-                        @click="addNewCriterion"
+                        @click="addNewGroupCriterion"
+                      >
+                        <span class="pr-2">
+                          <font-awesome-icon icon="plus" />
+                        </span>
+                        Add New Group Criteria
+                      </button>
+                    </div> -->
+                  </div>
+                  <div class="col-span-6">
+                    <fieldset>
+                      <legend class="sr-only">Assign Criterion</legend>
+                      <div
+                        class="text-base text-sm font-medium text-black"
+                        aria-hidden="true"
+                      >
+                        Assign Criterion For Individual Assessment
+                      </div>
+                      <div
+                        class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
+                      >
+                        <div
+                          class="
+                            mt-4
+                            space-y-4
+                            col-span-2
+                            md:col-span-1
+                            lg:col-span-1
+                          "
+                          v-for="(criteria, idx) in individualCriterion"
+                          :key="idx"
+                        >
+                          <div class="flex">
+                            <div class="flex items-center h-5">
+                              <input
+                                :id="criteria._id"
+                                :name="criteria.criteriaField"
+                                type="checkbox"
+                                class="
+                                  focus:ring-primary
+                                  h-4
+                                  w-4
+                                  text-primary
+                                  border-gray-dark
+                                  rounded
+                                "
+                                v-model="event.individualCriterion"
+                                :value="criteria"
+                              />
+                            </div>
+                            <div class="ml-3 text-sm">
+                              <label
+                                :for="criteria.criteriaField"
+                                class="font-medium text-black"
+                                >{{ criteria.criteriaField }}</label
+                              >
+                              <p class="text-gray-dark">
+                                {{ criteria.description }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div
+                          v-for="(addCriteria, idx) in addIndividualCriterion"
+                          :key="idx"
+                          class="col-span-3 mt-4"
+                        >
+                          <div
+                            class="
+                              text-base text-sm
+                              font-medium
+                              text-black
+                              flex
+                            "
+                            aria-hidden="true"
+                          >
+                            Create Criterion here
+                            <button
+                              type="button"
+                              class="text-red-600"
+                              @click="removeIndividualField(idx)"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <CriteriaForm class="mt-4" />
+                        </div> -->
+                      </div>
+                    </fieldset>
+                    <!-- <div class="mt-6">
+                      <button
+                        type="button"
+                        class="
+                          inline-flex
+                          justify-center
+                          py-2
+                          px-4
+                          bg-primary
+                          border border-transparent
+                          shadow-sm
+                          text-sm
+                          font-medium
+                          rounded-md
+                          text-white
+                          hover:bg-lightBlue
+                          focus:outline-none
+                          focus:ring-2
+                          focus:ring-offset-2
+                          focus:ring-primary
+                        "
+                        @click="addNewIndividualCriterion"
                       >
                         <span class="pr-2">
                           <font-awesome-icon icon="plus" />
                         </span>
                         Add New Criteria
                       </button>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -367,33 +477,47 @@ export default {
       //     events: [],
       //   },
       // ],
-      addCriterion: [],
+      addGroupCriterion: [],
+      addIndividualCriterion: [],
       event: {
         title: "",
         eventStatus: "",
         eventDate: "",
         active: true,
         examiners: [],
-        criterion: [],
+        groupCriterion: [],
+        individualCriterion: [],
       },
     };
   },
 
   async asyncData({ $axios, $config }) {
     const examiners = await $axios.$get(`api/user/getExaminers`);
+    const groupCriterion = await $axios.$get(
+      `api/criteria/showByCategory?category=group`
+    );
+    const individualCriterion = await $axios.$get(
+      `api/criteria/showByCategory?category=individual`
+    );
     const criterion = await $axios.$get(`api/criteria/show`);
 
     console.log(criterion);
 
-    return { examiners, criterion };
+    return { examiners, criterion, groupCriterion, individualCriterion };
   },
 
   methods: {
-    addNewCriterion() {
-      this.addCriterion.push("okay");
+    addNewGroupCriterion() {
+      this.addGroupCriterion.push("okay");
     },
-    removeCriteriaField(index) {
-      this.addCriterion.splice(index, 1);
+    addNewIndividualCriterion() {
+      this.addIndividualCriterion.push("okay");
+    },
+    removeGroupField(index) {
+      this.addGroupCriterion.splice(index, 1);
+    },
+    removeIndividualField(index) {
+      this.addIndividualCriterion.splice(index, 1);
     },
     async submitform(event) {
       await this.$axios

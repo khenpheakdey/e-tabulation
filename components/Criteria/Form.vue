@@ -23,6 +23,37 @@
               v-model="criteriaField"
             />
           </div>
+          <div class="col-span-2 font-medium">
+            <label for="country" class="block text-sm font-medium text-gray-700"
+              >Category</label
+            >
+            <select
+              id="selectedEvent"
+              name="selectedEvent"
+              class="
+                mt-1
+                block
+                w-full
+                py-2
+                px-3
+                border border-gray-dark
+                bg-white
+                rounded-md
+                shadow-sm
+                focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+                sm:text-sm
+              "
+              v-model="selectCategory"
+            >
+              <option
+                v-for="(category, idx) in category"
+                :key="idx"
+                :value="category"
+              >
+                {{ category }}
+              </option>
+            </select>
+          </div>
           <div class="col-span-2 grid grid-cols-2">
             <div
               v-for="(criteria, idx) in criterion"
@@ -209,11 +240,31 @@ import * as _ from "lodash";
 export default {
   data() {
     return {
-      levels: ["Excellent", "Very good", "Satisfactory", "Unsatisfactory"],
+      selectCategory: "Group",
+      category: ["Group", "Individual"],
+      levels: [
+        "Excellent",
+        "Very good",
+        "Satisfactory",
+        "Unsatisfactory",
+        "Exceeds Expectations",
+        "Meets Expectations",
+        "Meets Expectations sometimes",
+        "Does not meet expectations",
+      ],
+
+      // individualLevls: [
+      //   "Excellent",
+      //   "Meets Expectations",
+      //   "Exceeds Expectations",
+      //   "Meets Expectations sometimes",
+      //   "Does not meet expectations",
+      // ],
       criteriaField: "",
       criterion: [
         {
           criteriaField: "",
+          category: "",
           levels: "",
           description: "",
           minScore: "",
@@ -230,6 +281,7 @@ export default {
     addCriteriaField() {
       this.criterion.push({
         criteriaField: "",
+        category: "",
         levels: "",
         description: "",
         minScore: "",
@@ -265,15 +317,14 @@ export default {
 
         let newCriteriaField = await this.$axios.$post("/api/criteria/create", {
           criteriaField: this.criteriaField,
+          category: this.selectCategory.toLowerCase(),
         });
 
-        console.log(criteriaLevels);
-        console.log(newCriteriaField);
         this.$toast.show({
           type: "success",
           timeout: 2,
           title: "Success",
-          message: criteriaLevels.message,
+          message: newCriteriaField.message,
           classTimeout: "bg-primary",
         });
       }

@@ -29,17 +29,7 @@
             ></path>
           </svg>
         </span>
-        <h3
-          class="
-            flex
-            items-center
-            mb-1
-            text-lg
-            font-semibold
-            text-black
-            dark:text-white
-          "
-        >
+        <h3 class="flex items-center mb-1 text-lg font-semibold text-black">
           {{ event.title }}
           <span
             class="

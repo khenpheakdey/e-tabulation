@@ -1,9 +1,19 @@
 <template>
-  <div v-if="this.$auth.$state.user.roles[0] == 'ROLE_EXAMINER'">
+  <div v-if="this.$auth.user.roles[0] == 'ROLE_EXAMINER'">
+    <!-- <div v-if="'ROLE_ADMIN' == 'ROLE_EXAMINER'"> -->
     <sidebar-section>
       <sidebar-item title="Event" to="/examiners">
         <font-awesome-icon icon="list" />
       </sidebar-item>
+    </sidebar-section>
+    <sidebar-section>
+      <sidebar-item>
+        <font-awesome-icon icon="sign-out" class="text-red-500 pr-4" /><button
+          @click="$auth.logout()"
+        >
+          Logout
+        </button></sidebar-item
+      >
     </sidebar-section>
   </div>
   <div v-else>
@@ -24,12 +34,9 @@
       </sidebar-item>
     </sidebar-section>
     <sidebar-section name="Criterion">
-      <sidebar-item title="Criterion" to="/criterion">
+      <sidebar-item title="Criterion" to="/admin/criterion">
         <font-awesome-icon icon="list" />
       </sidebar-item>
-      <!-- <sidebar-item title="Create Criteria" to="/criterion/create-criteria">
-        <font-awesome-icon icon="note-sticky" />
-      </sidebar-item> -->
     </sidebar-section>
 
     <sidebar-section name="Events">
@@ -38,9 +45,18 @@
       </sidebar-item>
     </sidebar-section>
     <sidebar-section name="Reports">
-      <!-- <sidebar-item title="Score" to="/reports/score-report">
-        <font-awesome-icon icon="star" />
-      </sidebar-item> -->
+      <sidebar-item title="Score Reports" to="/admin/reports">
+        <font-awesome-icon icon="list" />
+      </sidebar-item>
+    </sidebar-section>
+    <sidebar-section>
+      <sidebar-item>
+        <font-awesome-icon icon="sign-out" class="text-red-500 pr-4" /><button
+          @click="$auth.logout()"
+        >
+          Logout
+        </button></sidebar-item
+      >
     </sidebar-section>
   </div>
 </template>

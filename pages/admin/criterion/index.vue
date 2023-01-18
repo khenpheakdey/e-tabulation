@@ -20,7 +20,7 @@
         </div>
       </div>
       <nuxt-link
-        to="/criterion/create-criteria"
+        to="/admin/criterion/create-criteria"
         class="
           w-32
           h-10
@@ -51,22 +51,6 @@
         <thead class="text-xs text-white uppercase bg-primary">
           <tr>
             <th scope="col" class="px-6 py-3">Content</th>
-            <!-- <th scope="col" class="px-6 py-3">
-              <table class="text-center align-center">
-                <tr class="border-b whitespace-nowrap">
-                  Levels
-                </tr>
-                <tr class="px-6 py-3">
-                  <td
-                    v-for="(level, idx) in criterion[0].levels"
-                    :key="idx"
-                    class="border p-2"
-                  >
-                    {{ level.levels }}
-                  </td>
-                </tr>
-              </table>
-            </th> -->
             <th
               scope="col"
               class="px-6 py-3"
@@ -91,7 +75,7 @@
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-              {{ criteria.criteriaField }}
+              {{ criteria.criteriaField }}{{ ` (${criteria.percentage}%)` }}
             </th>
             <td
               class="px-6 py-4"
@@ -109,25 +93,9 @@
                 }}
               </tr>
             </td>
-            <!-- <td class="px-6 py-4">{{ event.active }}</td>
-            <td class="px-6 py-4">{{ event.eventDate }}</td> -->
-            <!-- <td class="px-6 py-4 text-left">
-              <table>
-                <thead>
-                  <tr v-for="(level, idx) in criteria.levels" :key="idx">
-                    <th scope="col">{{ level.levels }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(level, idx) in criteria.levels" :key="idx">
-                    <td>{{ level.description }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td> -->
             <td class="px-6 py-4 text-right">
               <nuxt-link
-                :to="`/criterion/${criteria._id}`"
+                :to="`/admin/criterion/${criteria._id}`"
                 class="font-medium text-primary hover:underline"
                 >Edit</nuxt-link
               >

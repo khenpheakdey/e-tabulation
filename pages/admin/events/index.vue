@@ -363,7 +363,6 @@
 <script>
 import moment from "moment";
 export default {
-  // middleware: "authenticated",
   data() {
     return {
       openModal: false,

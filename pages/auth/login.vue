@@ -53,15 +53,13 @@
             <input type="hidden" name="remember" value="true" />
             <div class="rounded-md shadow-sm -space-y-px">
               <div class="my-5 text-sm">
-                <label
-                  for="username"
-                  class="block text-sm font-medium text-black"
-                  >Username</label
+                <label for="email" class="block text-sm font-medium text-black"
+                  >Email</label
                 >
                 <input
                   type="text"
-                  name="username"
-                  id="username"
+                  name="email"
+                  id="email"
                   class="
                     mt-1
                     focus:ring-primary focus:border-primary
@@ -149,7 +147,7 @@ import { mapState } from "vuex";
 import WhiteLogo from "~/static/icons/WhiteLogo.vue";
 
 export default {
-  middleware: "guest",
+  middleware: "isAuthenticated",
   layout: "guest",
   data() {
     return {
@@ -161,19 +159,13 @@ export default {
   },
   methods: {
     async login() {
+      this.$toast.show("Logging in...");
       try {
-        this.$toast.show("Logging in...");
         await this.$auth
           .loginWith("local", {
             data: this.loginData,
           })
           .then(async (response) => {
-            console.log(response.data);
-            const auth = {
-              accessToken: response.data.accessToken,
-            };
-            await this.$auth.setUser(response.data);
-            await this.$auth.setUserToken(response.data.accessToken);
             this.$toast.show({
               type: "success",
               timeout: 2,
@@ -183,7 +175,7 @@ export default {
             });
             this.$router.push("/");
           });
-      } catch (err) {
+      } catch (error) {
         this.$toast.show({
           type: "error",
           message: "Error while authenticating",

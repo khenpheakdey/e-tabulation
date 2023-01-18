@@ -21,7 +21,7 @@
       <div>
         <h3 class="flex items-center m-0 font-medium text-3xl text-white">
           <!-- Icon here -->
-          Welcome {{ $auth.$state.user.username }}
+          Welcome {{ $auth.user.username }}
         </h3>
         <div class="font-normal text-sm mt-4 mb-4 text-white overflow-hidden">
           Improve the existing manual tabulation.
@@ -49,18 +49,19 @@
       <Card title="Examiner" desc="Description" />
     </div>
     <h3 class="flex mb-2 text-md font-bold">Event Timeline</h3>
-    <EventTimeline :events="upcomingEvents" />
+    <!-- <EventTimeline :events="upcomingEvents" /> -->
   </div>
 </template>
 
 <script>
 export default {
-  middleware: "isAuthenticated",
-  async asyncData({ $axios, $config, $auth }) {
-    const events = await $axios.$get(`api/event/all`);
-    const upcomingEvents = await $axios.$get(`api/event/upcoming`);
-    console.log($auth.$state.user.roles);
-    return { events, upcomingEvents };
+  middleware: "auth",
+  async asyncData({ $axios }) {
+    const events = await $axios.$get(`/api/event/all`);
+    // const upcomingEvents = await $axios.$get(`event/upcoming`);
+    // console.log($auth.$state.user.roles);
+
+    return { events };
   },
 };
 </script>

@@ -70,17 +70,19 @@
               {{ examiner.username }}
             </th>
             <td class="px-6 py-4">{{ examiner.email }}</td>
-            <!-- <td class="px-6 py-4">{{ event.active }}</td>
-            <td class="px-6 py-4">{{ event.eventDate }}</td> -->
             <td class="px-6 py-4 text-right">
               <nuxt-link
                 :to="`/admin/examiners/${examiner._id}`"
                 class="font-medium text-primary hover:underline"
                 >Edit</nuxt-link
               >
-              <a href="#" class="font-medium text-red-600 hover:underline"
-                >Delete</a
+
+              <button
+                @click="deleteExaminer(examiner._id)"
+                class="font-medium text-red-600 hover:underline"
               >
+                Delete
+              </button>
             </td>
           </tr>
         </tbody>
@@ -94,6 +96,21 @@ export default {
   async asyncData({ $axios, $config }) {
     const examiners = await $axios.$get(`api/user/getExaminers`);
     return { examiners };
+  },
+  methods: {
+    async deleteExaminer(id) {
+      await this.$axios.delete(`/api/user/delete?id=${id}`).then((response) => {
+        console.log(response);
+        this.$toast.show({
+          type: "success",
+          timeout: 2,
+          title: "Success",
+          message: response.data.message,
+          classTimeout: "bg-primary",
+        });
+        this.$nuxt.refresh();
+      });
+    },
   },
 };
 </script>

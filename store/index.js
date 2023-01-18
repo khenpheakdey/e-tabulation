@@ -1,35 +1,24 @@
-import Cookie from 'cookie'
+export const state = () => ({
+  counter: 0,
+});
 
 export const getters = {
-    authenticated(state) {
-      return state.auth.loggedIn
-    },
+  getCounter(state) {
+    return state.counter;
+  },
+};
 
-    user(state) {
-      return state.auth.user
-    }
-  }
-
-
+export const mutations = {
+  increment(state) {
+    state.counter++;
+  },
+};
 
 export const actions = {
-  async nuxtServerInit ({ commit,dispatch }, { req }) {
-    let auth = null
-    const cookies = Cookie.parse(req.headers.cookie || '')
-    const token = cookies['jwt'] || ''
-    if (req.headers.cookie) {
-      // cookie found
-      try {
-        // check data user login with cookie
-        const { data } = await this.$axios.post('/api/auth/user')
-        dispatch('user/load', token)
-        // server return the data is cookie valid loggedIn is true
-        auth = data.data // set the data auth
-      } catch (err) {
-        // No valid cookie found
-        auth = null
-      }
-    }
-    this.$auth.setUser(auth) // set state auth
+  async fetchCounter({ state }) {
+    // make request
+    const res = { data: 10 };
+    state.counter = res.data;
+    return res.data;
   },
-}
+};

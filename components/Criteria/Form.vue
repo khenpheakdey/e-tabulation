@@ -23,6 +23,26 @@
               v-model="criteriaField"
             />
           </div>
+          <div class="col-span-2">
+            <label for="first-name" class="block text-sm font-medium text-black"
+              >Percentage</label
+            >
+            <input
+              type="text"
+              name="first-name"
+              class="
+                mt-1
+                focus:ring-primary focus:border-primary
+                block
+                w-full
+                shadow-sm
+                sm:text-sm
+                border-gray-dark
+                rounded-md
+              "
+              v-model="criteriaPercentage"
+            />
+          </div>
           <div class="col-span-2 font-medium">
             <label for="country" class="block text-sm font-medium text-gray-700"
               >Category</label
@@ -261,6 +281,7 @@ export default {
       //   "Does not meet expectations",
       // ],
       criteriaField: "",
+      criteriaPercentage: 0,
       criterion: [
         {
           criteriaField: "",
@@ -300,7 +321,6 @@ export default {
         };
       });
 
-      console.log(criteriaLevelsForm);
       if (this.criteriaField == "") {
         this.$toast.show({
           type: "error",
@@ -317,6 +337,7 @@ export default {
 
         let newCriteriaField = await this.$axios.$post("/api/criteria/create", {
           criteriaField: this.criteriaField,
+          percentage: this.criteriaPercentage,
           category: this.selectCategory.toLowerCase(),
         });
 
@@ -329,6 +350,7 @@ export default {
         });
       }
       this.criteriaField = "";
+      this.criteriaPercentage = 0;
       this.criterion = [
         {
           criteriaField: "",

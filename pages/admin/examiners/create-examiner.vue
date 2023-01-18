@@ -230,7 +230,7 @@ export default {
     async submitform() {
       console.log(this.examiner);
       await this.$axios
-        .$post("api/auth/signup", {
+        .$post("api/auth/register", {
           username: this.examiner.username,
           email: this.examiner.email,
           password: this.examiner.password,

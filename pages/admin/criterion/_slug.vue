@@ -25,13 +25,13 @@
               <div class="grid grid-cols-2 gap-y-4">
                 <div class="col-span-2">
                   <label
-                    for="first-name"
+                    for="criteriaField"
                     class="block text-sm font-medium text-black"
                     >Content</label
                   >
                   <input
                     type="text"
-                    name="first-name"
+                    name="criteriaField"
                     class="
                       mt-1
                       focus:ring-primary focus:border-primary
@@ -43,6 +43,28 @@
                       rounded-md
                     "
                     v-model="criteria.criteriaField"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="criteriaField"
+                    class="block text-sm font-medium text-black"
+                    >Percentage(%)</label
+                  >
+                  <input
+                    type="text"
+                    name="criteriaField"
+                    class="
+                      mt-1
+                      focus:ring-primary focus:border-primary
+                      block
+                      w-full
+                      shadow-sm
+                      sm:text-sm
+                      border-gray-dark
+                      rounded-md
+                    "
+                    v-model="criteria.percentage"
                   />
                 </div>
                 <div class="col-span-2 grid grid-cols-2">
@@ -244,6 +266,8 @@ export default {
     removeCriteria(index) {
       this.criteria.levels.splice(index, 1);
     },
+
+    submitform() {},
     // addCriteriaField() {
     //   this.criteria.levels.push({
     //     criteriaField: "",
